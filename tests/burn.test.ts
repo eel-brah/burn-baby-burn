@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { assess, formatLeft, isNagDue, quote, statusText } from '../hooks/burn'
+import { WINDOW_HOURS, assess, formatLeft, isNagDue, quote, readLastNag, statusText } from '../hooks/burn'
 
 const HOUR = 3_600_000
 const NOW = Date.parse('2026-10-02T12:00:00Z')
@@ -35,5 +35,13 @@ describe('burn', () => {
     expect(statusText(burn)).toBe('🔥🔥🔥 60% of the week left · resets in 3h 15m')
     expect(formatLeft(28 * HOUR)).toBe('1d 4h')
     expect(formatLeft(30_000)).toBe('1m')
+  })
+
+  test('reads only well-formed store values', () => {
+    expect(readLastNag({ at: 5, tier: 'blaze' })).toEqual({ at: 5, tier: 'blaze' })
+    expect(readLastNag(undefined)).toBeUndefined()
+    expect(readLastNag({ at: '5', tier: 'blaze' })).toBeUndefined()
+    expect(readLastNag({ at: 5, tier: 'volcano' })).toBeUndefined()
+    expect(WINDOW_HOURS).toBe(72)
   })
 })

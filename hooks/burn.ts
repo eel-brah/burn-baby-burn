@@ -56,8 +56,22 @@ export function nagEvery(tier: Tier): number {
   return TIERS.find(t => t.tier === tier)?.every ?? 6 * HOUR
 }
 
-// A new, hotter tier always nags; otherwise once per the tier's interval.
-export function isNagDue(burn: Burn, now: number, last: { at: number; tier: Tier } | undefined): boolean {
+// The warning window: the widest tier's reach before the reset.
+export const WINDOW_HOURS = Math.max(...TIERS.map(t => t.within)) / HOUR
+
+export type LastNag = { at: number; tier: Tier }
+
+// Store values are untrusted (older versions, hand edits): anything malformed counts as no nag yet.
+export function readLastNag(value: unknown): LastNag | undefined {
+  if (typeof value !== 'object' || value === null) return undefined
+  const { at, tier } = value as Record<string, unknown>
+  if (typeof at !== 'number' || !Number.isFinite(at)) return undefined
+  if (!TIERS.some(t => t.tier === tier)) return undefined
+  return { at, tier: tier as Tier }
+}
+
+// Tiers only get hotter as the reset nears, so a tier change always nags; otherwise once per the tier's interval.
+export function isNagDue(burn: Burn, now: number, last: LastNag | undefined): boolean {
   if (last === undefined || last.tier !== burn.tier) return true
   return now - last.at >= nagEvery(burn.tier)
 }

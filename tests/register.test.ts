@@ -27,4 +27,36 @@ describe('register', () => {
     await measure()
     expect(toasts.length).toBe(2)
   })
+
+  test('keeps the countdown and nags going while the user is idle', async ($, on) => {
+    const toasts: string[] = []
+    const statuses: (string | undefined)[] = []
+    const clock = mock.clock(on, { now: NOW })
+    mock.store(on)
+    on('ui.toast', ($, e) => {
+      toasts.push(String(e.text))
+      return { value: undefined }
+    })
+    on('ui.status', ($, e) => {
+      statuses.push(e.text as string | undefined)
+      return { value: undefined }
+    })
+    on('command.register', () => ({ value: undefined }) as never)
+    on('session.usage', () => ({ value: { context: CONTEXT, rateLimits: LIMITS } }) as never)
+    on('session.start', ($, e) => ({ cwd: e.cwd }))
+
+    await $.session.start({ cwd: '/tmp', surface: 'terminal', isInteractive: true })
+    expect(toasts.length).toBe(1)
+    expect(statuses.at(-1)).toMatch(/resets in 5h 0m/)
+
+    // No measure at all: only the timer runs.
+    await clock.advance(31 * 60_000)
+    expect(statuses.at(-1)).toMatch(/resets in 4h 29m/)
+    expect(toasts.length).toBe(2)
+
+    // Past the reset, the status clears.
+    await clock.advance(5 * HOUR)
+    expect(statuses.at(-1)).toBeUndefined()
+  })
 })
+
