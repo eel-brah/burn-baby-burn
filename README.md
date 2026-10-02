@@ -21,6 +21,12 @@ To try it without installing: `claude --plugin-dir /path/to/burn-baby-burn`.
 
 It reads Claude Code's own usage data for this session (it uses only the weekly limit) and the clock, re-checking once a minute. It shows a status line and toasts, adds the `/burn` command, and keeps the time and level of its last nag in Claude Code's plugin store. It sends nothing over the network, runs no commands and touches no other files.
 
+Its hooks (`hooks/register.ts`) only observe and always pass the event on unchanged:
+
+- `session.start`: registers `/burn`, takes the first usage reading and starts the one-minute re-check.
+- `session.measure`: re-checks when Claude Code reports new rate limits.
+- `command.run` (only for `/burn`): answers with the current status; every other command is left alone.
+
 A mod runs inside Claude Code with the same access Claude Code has. Read the code (`hooks/`) before installing.
 
 ## Tweak
