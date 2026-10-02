@@ -1,6 +1,6 @@
 {
   "name": "burn-baby-burn",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Nags you, with fire, when much of your weekly usage limit is still unspent close to the reset",
   "author": {
     "name": "Mehdi"

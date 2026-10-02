@@ -21,6 +21,12 @@ const QUOTES: Record<Tier, string[]> = {
     "Your weekly quota called. It's feeling unloved.",
     'Unused tokens are just compute crying quietly.',
     'Light my fire: {left} left, reset in {time}.',
+    "{left} of your week is still in the fridge. It expires in {time}.",
+    "Your tokens are like gym membership: paid for and unused.",
+    "Fun fact: unused tokens don't go to token heaven.",
+    "Your context window is looking a bit empty. Feed it.",
+    "Somewhere, a backlog is waiting for you. {left} could clear it.",
+    "Claude is getting bored. Give it a refactor.",
   ],
   blaze: [
     'Disco inferno: {left} left and under a day to go.',
@@ -28,6 +34,12 @@ const QUOTES: Record<Tier, string[]> = {
     'Somewhere a GPU is idle because of you.',
     'We didn\'t start the fire, but {left} of your week says you should.',
     'Ship it like the reset is tomorrow. Because it is.',
+    "{left} left and {time} to go. Even your linter is judging you.",
+    "That TODO from 2023? Now's the time. {left} says so.",
+    "Pretend it's Friday at 5 pm and the demo is Monday.",
+    "Your weekly quota is packing its bags. {time} until it leaves.",
+    "Write the tests you promised yourself. You have {left} of a week to do it.",
+    "Under a day left. Ask Claude something ambitious.",
   ],
   inferno: [
     'BURN BABY BURN! {left} left, reset in {time}!',
@@ -35,6 +47,12 @@ const QUOTES: Record<Tier, string[]> = {
     "It's the final countdown: {time} to burn {left}.",
     'Refactor something. Anything. Now.',
     'Great balls of fire! {left} still unspent!',
+    "{time} left. This is not a drill. {left} still unburned!",
+    "Open every repo. Fix everything. GO.",
+    "The tokens are melting. {left} gone in {time}.",
+    "Spend it like it's the last day of vacation money.",
+    "Ask Claude to rewrite it in Rust. You have {left} to spare.",
+    "Midnight sale on tokens: everything must go in {time}.",
   ],
 }
 
