@@ -1,0 +1,6 @@
+{
+  "name": "burn-baby-burn",
+  "description": "Claude Code mod that nags you to use your weekly limit before it resets",
+  "owner": { "name": "Mehdi" },
+  "plugins": [{ "name": "burn-baby-burn", "source": "./" }]
+}
