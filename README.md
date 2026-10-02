@@ -11,7 +11,7 @@ A Claude Code mod that nags you, with fire, when much of your weekly usage limit
 Requires Claude Code 2.1.287 or later and a plan with a weekly limit.
 
 ```bash
-claude plugin marketplace add <owner>/burn-baby-burn
+claude plugin marketplace add eel-brah/burn-baby-burn
 claude plugin install burn-baby-burn@burn-baby-burn --scope user
 ```
 
