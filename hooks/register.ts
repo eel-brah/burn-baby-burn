@@ -1,6 +1,6 @@
 import type { EngineInterface, Register } from 'claude-code'
 
-import { MIN_LEFT, WINDOW_HOURS, assess, isNagDue, quote, readLastNag, statusText, weekly } from './burn'
+import { API, CALM, WARMUP, WINDOW_HOURS, assess, isNagDue, pick, quote, readLastNag, statusText, weekly } from './burn'
 import type { Limit } from './burn'
 
 const LAST_NAG = 'lastNag'
@@ -50,15 +50,15 @@ export const register: Register = on => {
 
   on('command.run', { command: 'burn' }, async $ => {
     const now = await $.clock.now()
-    const limit = weekly((await $.session.usage()).rateLimits)
-    if (limit === undefined) return { text: 'No weekly limit reading yet. Send a prompt first, then try /burn again.' }
-    const burn = assess(limit, now)
-    if (burn === null) {
-      const left = Math.round(100 - limit.percentUsed)
-      return {
-        text: `${left}% of the week left. Nothing to burn yet (nags start ${WINDOW_HOURS} h before the reset with ${MIN_LEFT}%+ left).`,
-      }
+    const usage = await $.session.usage()
+    const limit = weekly(usage.rateLimits)
+    if (limit === undefined) {
+      // Subscriptions report the weekly window with the first answer; still none after one means an API key.
+      const hasAnswered = (usage.context.tokens ?? 0) > 0 || (usage.cost?.usd ?? 0) > 0
+      return { text: pick(hasAnswered ? API : WARMUP, now) }
     }
+    const burn = assess(limit, now)
+    if (burn === null) return { text: `${Math.round(100 - limit.percentUsed)}% of the week left. ${pick(CALM, now).replaceAll('{window}', String(WINDOW_HOURS))}` }
     return { text: `${statusText(burn)}\n${quote(burn, now)}` }
   })
 }

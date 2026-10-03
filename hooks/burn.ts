@@ -102,12 +102,45 @@ export function formatLeft(ms: number): string {
   return `${Math.max(1, Math.floor(ms / 60000))}m`
 }
 
-// Picks a quote that changes every minute, so repeat nags don't repeat lines.
-export function quote(burn: Burn, now: number): string {
-  const lines = QUOTES[burn.tier]
-  const line = lines[Math.floor(now / 60000) % lines.length] ?? lines[0] ?? ''
-  return line.replaceAll('{left}', `${burn.left}%`).replaceAll('{time}', formatLeft(burn.msLeft))
+// Picks a line that changes every minute, so repeat nags don't repeat lines.
+export function pick(lines: readonly string[], now: number): string {
+  return lines[Math.floor(now / 60000) % lines.length] ?? lines[0] ?? ''
 }
+
+export function quote(burn: Burn, now: number): string {
+  return pick(QUOTES[burn.tier], now)
+    .replaceAll('{left}', `${burn.left}%`)
+    .replaceAll('{time}', formatLeft(burn.msLeft))
+}
+
+// /burn outside the warning window.
+export const CALM = [
+  "The fire is just a pilot light for now. Go build something.",
+  "Plenty of fuel in the tank. I'll start yelling {window} h before the reset.",
+  "Relax. Your tokens are safe… for now. 😈",
+  "Too early to panic. Come back in a few days.",
+  "The kindling is stacked. The match is ready. Not yet, though.",
+  "I'm on standby. Spend wisely, and I'll keep quiet.",
+]
+
+// /burn when Claude has answered but no weekly limit came back: an API key, pay per token.
+export const API = [
+  "No weekly limit here. You pay per token, so I'm the one who should be scared. 💸",
+  "API user detected. There's no quota to burn, only your credit card.",
+  "You don't have a weekly limit. You have an invoice.",
+  "Nothing resets for you. Your bill just keeps going up.",
+  "I'm a weekly-limit nagger with no weekly limit. Existential crisis. 🔥🫠",
+  "Every token counts on your bill. Burn responsibly.",
+]
+
+// /burn before the session's first answer, when there is no reading yet.
+export const WARMUP = [
+  "I can't see your fuel gauge yet. Say something to Claude and I'll take a look.",
+  "Warming up the matches… send a prompt and I'll check your tank.",
+  "No smoke without fire, and no reading without a prompt. Ask Claude anything.",
+  "I'm blind until Claude answers once. Go on, poke it.",
+  "Still lighting the stove. One prompt and I'll know how much you've got to burn.",
+]
 
 export function statusText(burn: Burn): string {
   const flames = { smoulder: '🔥', blaze: '🔥🔥', inferno: '🔥🔥🔥' }[burn.tier]
