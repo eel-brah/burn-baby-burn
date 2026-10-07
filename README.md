@@ -10,6 +10,17 @@ A Claude Code mod that nags you, with fire, when much of your weekly usage limit
 
 Requires Claude Code 2.1.287 or later and a plan with a weekly limit.
 
+From the Claude plugin directory, where it is listed as "Burn Baby Burn":
+
+```bash
+claude plugin install burn-baby-burn@anthropic-plugin-directory --scope user
+```
+
+Or run `/plugin` in Claude Code and search for "Burn Baby Burn", or install it from
+[claude.ai/directory](https://claude.ai/directory).
+
+Or straight from this repo, which is its own marketplace:
+
 ```bash
 claude plugin marketplace add eel-brah/burn-baby-burn
 claude plugin install burn-baby-burn@burn-baby-burn --scope user
