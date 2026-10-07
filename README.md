@@ -1,9 +1,17 @@
-# burn-baby-burn
+<p align="center">
+  <img src="assets/banner.svg" alt="Burn Baby Burn: a Claude Code mod that nags you, with fire, when your weekly limit is about to go to waste" width="100%">
+</p>
+
+# Burn Baby Burn
 
 A Claude Code mod that nags you, with fire, when much of your weekly usage limit is still unspent close to the reset.
 
+<p align="center">
+  <img src="assets/tiers.svg" alt="The nags get hotter as the reset nears: one flame every 6 hours from 3 days out, two flames every 2 hours from 1 day out, three flames every 30 minutes in the last 6 hours" width="100%">
+</p>
+
 - Status line: `🔥🔥 68% of the week left · resets in 16h 4m`, shown in the last 72 h before the weekly reset when 25%+ is left.
-- Toasts that get hotter and more frequent as the reset nears (🔥 every 6 h, 🔥🔥 every 2 h, 🔥🔥🔥 every 30 min).
+- Toasts that get hotter and more frequent as the reset nears (🔥 every 6 h, 🔥🔥 every 2 h, 🔥🔥🔥 every 30 min), each with a different quote.
 - `/burn` shows the status on demand.
 
 ## Install
